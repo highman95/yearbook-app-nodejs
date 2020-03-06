@@ -1,0 +1,51 @@
+{
+    "name": "yearbook-app-nodejs",
+    "version": "1.0.0",
+    "description": "Yearbook app (built with NodeJS)",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "start-dev": "cross-env NODE_ENV=development nodemon -e js,hbs",
+        "test": "jasmine",
+        "lint": "eslint src/**/*.js --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/highman95/yearbook-app-nodejs.git"
+    },
+    "keywords": [
+        "yearbook",
+        "almanac",
+        "api",
+        "nodejs"
+    ],
+    "author": "Emma NWAMAIFE",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/highman95/yearbook-app-nodejs/issues"
+    },
+    "homepage": "https://github.com/highman95/yearbook-app-nodejs#readme",
+    "dependencies": {
+        "bcrypt": "^3.0.6",
+        "body-parser": "^1.19.0",
+        "cloudinary": "^1.16.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "hbs": "^4.1.0",
+        "jsonwebtoken": "^8.5.1",
+        "multer": "^1.4.2",
+        "node-esapi": "0.0.1",
+        "pg": "^7.12.1",
+        "request": "^2.88.0"
+    },
+    "devDependencies": {
+        "cross-env": "^6.0.3",
+        "eslint": "^6.6.0",
+        "eslint-config-airbnb": "^18.0.1",
+        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-plugin-import": "^2.18.2",
+        "jasmine": "^3.5.0",
+        "jasmine-spec-reporter": "^4.2.1",
+        "nodemon": "^1.19.4"
+    }
+}
