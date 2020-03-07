@@ -33,8 +33,9 @@ app.set('view engine', 'hbs')//.set('views', path.join(__dirname, '../templates/
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/api/v1', routes(router), (err, req, res, next) => {
+    console.log(`${err.name || err.error.name} --- ${err.message || err.error.message}`)
     const isCSE = (err.name === 'TokenExpiredError') || (err.name === 'TypeError') || (err.name === 'Error');
-    res.status(isCSE ? 400 : 500).send({ status: 'error', error: err.message || err.error.message });
+    res.status(err.statusCode || (isCSE ? 400 : 500)).send({ status: 'error', error: err.message || err.error.message });
 });
 
 
