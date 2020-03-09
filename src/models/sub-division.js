@@ -26,7 +26,7 @@ module.exports = {
     fetchAll: async (divisionId) => {
         if (!divisionId) throw new BadRequestError('The parent division-id is missing')
 
-        const result = await db.query(`SELECT * FROM sub_divisions WHERE division_id = $1`, [divisionId])
+        const result = await db.query('SELECT id, name FROM sub_divisions WHERE division_id = $1', [divisionId])
         return result.rows
     },
 
@@ -35,7 +35,7 @@ module.exports = {
 
         let subDivision = {};
         try {
-            const result = await db.query('SELECT * FROM sub_divisions WHERE LOWER(name) = $1', [name.toLowerCase()]);
+            const result = await db.query('SELECT id, name FROM sub_divisions WHERE LOWER(name) = $1', [name.toLowerCase()]);
             subDivision = (result.rowCount === 0) ? null : result.rows[0];
         } catch (e) {
             throw new DatabaseError('The sub-division details could not be retrieved')
@@ -47,7 +47,7 @@ module.exports = {
     find: async (id) => {
         if (!id) throw new BadRequestError("The sub-division's unique-id is missing!");
 
-        const result = await db.query('SELECT * FROM sub_divisions WHERE id = $1', [id]);
+        const result = await db.query('SELECT id, name FROM sub_divisions WHERE id = $1', [id]);
         return (result.rowCount === 0) ? null : result.rows[0];
     }
 }
