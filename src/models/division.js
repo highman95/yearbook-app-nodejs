@@ -23,6 +23,18 @@ module.exports = {
         return division;
     },
 
+    fetchAll: async (institutionId) => {
+        if (!institutionId) throw new BadRequestError('The institution-id is missing')
+
+        try {
+            const results = await db.query('SELECT id, name FROM divisions WHERE institution_id = $1', [institutionId])
+            return results.rows
+        } catch (e) {
+            console.error('[Div.] DB-Error: ', e.message || e.error.message)
+            throw new DatabaseError('The divisions could not be retrieved')
+        }
+    },
+
     findByName: async (name) => {
         if (!name) throw new BadRequestError("The division's name is missing");
 
@@ -31,7 +43,7 @@ module.exports = {
             const result = await db.query('SELECT * FROM divisions WHERE LOWER(name) = $1', [name.toLowerCase()]);
             division = (result.rowCount === 0) ? null : result.rows[0];
         } catch (e) {
-            console.error('[Inst.] DB-Error: ', e.message || e.error.message)
+            console.error('[Div.] DB-Error: ', e.message || e.error.message)
             throw new DatabaseError('The division details could not be retrieved')
         }
 
