@@ -23,6 +23,13 @@ module.exports = {
         return subDivision;
     },
 
+    fetchAll: async (divisionId) => {
+        if (!divisionId) throw new BadRequestError('The parent division-id is missing')
+
+        const result = await db.query(`SELECT * FROM sub_divisions WHERE division_id = $1`, [divisionId])
+        return result.rows
+    },
+
     findByName: async (name) => {
         if (!name) throw new BadRequestError("The sub-division's name is missing");
 
@@ -36,4 +43,11 @@ module.exports = {
 
         return subDivision;
     },
+
+    find: async (id) => {
+        if (!id) throw new BadRequestError("The sub-division's unique-id is missing!");
+
+        const result = await db.query('SELECT * FROM sub_divisions WHERE id = $1', [id]);
+        return (result.rowCount === 0) ? null : result.rows[0];
+    }
 }

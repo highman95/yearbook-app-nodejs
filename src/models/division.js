@@ -1,4 +1,5 @@
 const institutionModel = require('./institution')
+const subDivisionModel = require('./sub-division')
 const { BadRequestError, ConflictError, DatabaseError, NotFoundError } = require('../utils/http-errors')
 
 module.exports = {
@@ -40,7 +41,7 @@ module.exports = {
 
         let division = {};
         try {
-            const result = await db.query('SELECT * FROM divisions WHERE LOWER(name) = $1', [name.toLowerCase()]);
+            const result = await db.query('SELECT id, name FROM divisions WHERE LOWER(name) = $1', [name.toLowerCase()]);
             division = (result.rowCount === 0) ? null : result.rows[0];
         } catch (e) {
             console.error('[Div.] DB-Error: ', e.message || e.error.message)
@@ -49,4 +50,17 @@ module.exports = {
 
         return division;
     },
+
+    find: async (id) => {
+        if (!id) throw new BadRequestError("The division's unique-id is missing")
+
+        const result = await db.query('SELECT id, name FROM divisions WHERE id = $1', [id])
+        let division = (result.rowCount === 0) ? null : result.rows[0]
+
+        if (!division) {
+            division.sub_divisions = await subDivisionModel.fetchAll(division.id)
+        }
+
+        return division
+    }
 }
