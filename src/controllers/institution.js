@@ -11,4 +11,13 @@ module.exports = {
             next(e)
         }
     },
+
+    fetch: async (req, res, next) => {
+        try {
+            const institutions = await institutionModel.fetchAll()
+            res.status(200).json({ status: 'success', data: institutions })
+        } catch (e) {
+            next(e)
+        }
+    }
 }
