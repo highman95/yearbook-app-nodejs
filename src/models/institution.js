@@ -17,6 +17,16 @@ module.exports = {
         return institution;
     },
 
+    fetchAll: async () => {
+        try {
+            const result = await db.query('SELECT id, name FROM institutions');
+            return (result.rowCount === 0) ? [] : result.rows;
+        } catch (e) {
+            console.error('[Inst.] DB-Error: ', e.message || e.error.message)
+            throw new DatabaseError('The institutions could not be retrieved')
+        }
+    },
+
     findByName: async (name) => {
         if (!name) throw new BadRequestError("The institution's name is missing");
 
