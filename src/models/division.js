@@ -57,7 +57,7 @@ module.exports = {
         const result = await db.query('SELECT id, name FROM divisions WHERE id = $1', [id])
         let division = (result.rowCount === 0) ? null : result.rows[0]
 
-        if (!division) {
+        if (!!division) {
             division.sub_divisions = await subDivisionModel.fetchAll(division.id)
         }
 
