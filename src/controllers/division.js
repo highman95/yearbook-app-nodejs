@@ -11,5 +11,16 @@ module.exports = {
             next(e)
         }
     },
+
+    fetch: async (req, res, next) => {
+        const { params: { institutionId } } = req;
+
+        try {
+            const divisions = await divisionModel.fetchAll(institutionId)
+            res.status(200).json({ status: 'success', data: divisions })
+        } catch (e) {
+            next(e)
+        }
+    }
 }
 
