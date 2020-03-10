@@ -1,3 +1,4 @@
+const divisionModel = require('./division')
 const { BadRequestError, ConflictError, DatabaseError } = require('../utils/http-errors')
 
 module.exports = {
@@ -41,4 +42,17 @@ module.exports = {
 
         return institution;
     },
+
+    find: async (id) => {
+        if (!id) throw new BadRequestError("The institution's unique-id is missing")
+
+        const result = await db.query('SELECT id, name, created_at FROM institutions WHERE id = $1', [id])
+        let institution = (result.rowCount === 0) ? null : result.rows[0]
+
+        if (!!institution) {
+            institution.divisions = await divisionModel.fetchAll(institution.id)
+        }
+
+        return institution
+    }
 }
