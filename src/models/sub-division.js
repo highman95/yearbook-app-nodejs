@@ -24,7 +24,7 @@ module.exports = {
     },
 
     fetchAll: async (divisionId) => {
-        if (!divisionId) throw new BadRequestError('The parent division-id is missing')
+        if (!divisionId) throw new BadRequestError('The division-id is missing')
 
         const result = await db.query('SELECT id, name FROM sub_divisions WHERE division_id = $1', [divisionId])
         return result.rows
