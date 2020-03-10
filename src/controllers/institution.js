@@ -19,5 +19,16 @@ module.exports = {
         } catch (e) {
             next(e)
         }
+    },
+
+    view: async (req, res, next) => {
+        const { params: { institutionId } } = req
+
+        try {
+            const institution = await institutionModel.find(institutionId)
+            res.status(200).json({ status: 'success', data: institution })
+        } catch (e) {
+            next(e)
+        }
     }
 }
