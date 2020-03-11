@@ -14,4 +14,14 @@ module.exports = {
             if (!value || value.trim() === '') throw new BadRequestError(`The ${key} is missing`)
         });
     },
+
+    dbEntities: { institutions: 'institutions', divisions: 'divisions', sub_divisions: 'sub_divisions' },
+
+    findByName: async (table, name) => {
+        if (!table) throw new BadRequestError('The entity-name is missing')
+        if (!name) throw new BadRequestError('The name is missing')
+
+        const result = await db.query(`SELECT id, name, created_at FROM ${table} WHERE LOWER(name) = $1`, [name.toLowerCase()])
+        return (result.rowCount === 0) ? null : result.rows[0];
+    }
 }
