@@ -1,4 +1,3 @@
-const subDivisionModel = require('./sub-division')
 const { dbEntities, findByName } = require('../utils/helper')
 const { BadRequestError, ConflictError, DatabaseError, NotFoundError } = require('../utils/http-errors')
 
@@ -32,12 +31,6 @@ module.exports = {
         if (!id) throw new BadRequestError("The division's unique-id is missing")
 
         const result = await db.query(`SELECT id, name, created_at FROM ${dbEntities.divisions} WHERE id = $1`, [id])
-        let division = (result.rowCount === 0) ? null : result.rows[0]
-
-        if (!!division) {
-            division.sub_divisions = await subDivisionModel.fetchAll(division.id)
-        }
-
-        return division
+        return (result.rowCount === 0) ? null : result.rows[0]
     }
 }

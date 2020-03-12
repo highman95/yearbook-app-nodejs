@@ -1,4 +1,5 @@
 const institutionModel = require('../models/institution')
+const divisionModel = require('../models/division')
 
 module.exports = {
     create: async (req, res, next) => {
@@ -26,6 +27,11 @@ module.exports = {
 
         try {
             const institution = await institutionModel.find(institutionId)
+
+            if (!!institution) {
+                institution.divisions = await divisionModel.fetchAll(institution.id)
+            }
+
             res.status(200).json({ status: 'success', data: institution })
         } catch (e) {
             next(e)

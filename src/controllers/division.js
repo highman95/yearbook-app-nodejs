@@ -1,4 +1,5 @@
 const divisionModel = require('../models/division')
+const subDivisionModel = require('../models/sub-division')
 
 module.exports = {
     create: async (req, res, next) => {
@@ -28,6 +29,11 @@ module.exports = {
 
         try {
             const division = await divisionModel.find(divisionId)
+
+            if (!!division) {
+                division.sub_divisions = await subDivisionModel.fetchAll(division.id)
+            }
+
             res.status(200).json({ status: 'success', data: division })
         } catch (e) {
             next(e)

@@ -1,4 +1,3 @@
-const divisionModel = require('./division')
 const { dbEntities, findByName } = require('../utils/helper')
 const { BadRequestError, ConflictError, DatabaseError } = require('../utils/http-errors')
 
@@ -25,12 +24,6 @@ module.exports = {
         if (!id) throw new BadRequestError("The institution's unique-id is missing")
 
         const result = await db.query(`SELECT id, name, created_at FROM ${dbEntities.institutions} WHERE id = $1`, [id])
-        let institution = (result.rowCount === 0) ? null : result.rows[0]
-
-        if (!!institution) {
-            institution.divisions = await divisionModel.fetchAll(institution.id)
-        }
-
-        return institution
+        return (result.rowCount === 0) ? null : result.rows[0]
     }
 }
