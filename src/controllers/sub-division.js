@@ -5,8 +5,8 @@ module.exports = {
         const { body: { division_name, name }, userId } = req;
 
         try {
-            const subDivision = await subDivisionModel.addOne(division_name, name, userId)
-            res.status(201).json({ status: 'success', data: { message: 'Sub-division successfully created', subDivision } })
+            const sub_division = await subDivisionModel.addOne(division_name, name, userId)
+            res.status(201).json({ status: 'success', data: { message: 'Sub-division successfully created', sub_division } })
         } catch (e) {
             next(e)
         }
