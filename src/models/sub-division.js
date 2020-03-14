@@ -3,9 +3,6 @@ const { BadRequestError, ConflictError, DatabaseError } = require('../utils/http
 
 module.exports = {
     async addOne(name, divisionId, moderatorId) {
-        if (!name) throw new BadRequestError('The name is missing')
-        if (!divisionId) throw new BadRequestError('The division-id is missing')
-
         if (!!await this.findByName(divisionId, name)) throw new ConflictError('The sub-division already exists')
 
         try {

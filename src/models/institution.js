@@ -3,7 +3,7 @@ const { BadRequestError, ConflictError, DatabaseError } = require('../utils/http
 
 module.exports = {
     async addOne(name, shortName, moderatorId) {
-        if (!name || !shortName) throw new BadRequestError('The name or its acronym is missing')
+        if (!shortName) throw new BadRequestError('The acronym is missing')
         if (!!await this.findByName(name)) throw new ConflictError('The institution-name already exists')
 
         try {

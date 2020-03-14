@@ -15,7 +15,7 @@ module.exports = {
 
         // verify birth-date value i.e valid and not under-age
 
-        if (!!await this.findOneByEmail(email)) throw new ConflictError('E-mail address already exists')
+        if (!!await this.findByEmail(email)) throw new ConflictError('E-mail address already exists')
         //#endregion
 
         //#region encrypt the password and compute input parameters
@@ -28,10 +28,9 @@ module.exports = {
         }
         //#endregion
 
-        let result = {}
         try {
             const input = [firstName, lastName, birthDate, genderLcase, email, hashedPassword, address]
-            result = await db.query(`INSERT INTO ${dbEntities.alumni} (first_name, last_name, birth_date, gender, email, passw0rd, address) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, first_name`, input)
+            const result = await db.query(`INSERT INTO ${dbEntities.alumni} (first_name, last_name, birth_date, gender, email, passw0rd, address) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, first_name`, input)
             return (result.rowCount === 0) ? null : result.rows[0]
         } catch (e) {
             console.error('[Cand.] DB-Error: ', e.message || e.error.message)
@@ -39,7 +38,7 @@ module.exports = {
         }
     },
 
-    findOneByEmail: async (email) => {
+    findByEmail: async (email) => {
         if (!email) throw new BadRequestError('The e-mail address is missing')
 
         const result = await db.query(`SELECT * FROM ${dbEntities.alumni} WHERE email = $1`, [email])
