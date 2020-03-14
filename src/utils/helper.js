@@ -15,5 +15,5 @@ module.exports = {
         });
     },
 
-    dbEntities: { institutions: 'institutions', divisions: 'divisions', sub_divisions: 'sub_divisions' }
+    dbEntities: { institutions: 'institutions', divisions: 'divisions', sub_divisions: 'sub_divisions', alumni: 'alumni' }
 }
