@@ -1,5 +1,5 @@
 const { dbEntities } = require('../utils/helper')
-const { BadRequestError, ConflictError, DatabaseError, NotFoundError } = require('../utils/http-errors')
+const { BadRequestError, ConflictError, DatabaseError } = require('../utils/http-errors')
 
 module.exports = {
     async addOne(name, institutionId, moderatorId) {
