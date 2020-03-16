@@ -13,4 +13,16 @@ module.exports = {
             next(e)
         }
     },
+
+    authenticate: async (req, res, next) => {
+        const { email, password } = req.body
+
+        try {
+            const { id, first_name, last_name } = await alumnusModel.verifyCredentials(email, password)
+            const token = generateToken({ user_id: id })
+            res.status(200).json({ status: 'success', data: { user: { first_name, last_name, email }, token } })
+        } catch (e) {
+            next(e)
+        }
+    }
 }
