@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
-const { dbEntities, validateParameters } = require('../utils/helper')
-const { ConflictError, DatabaseError, NotAcceptableError } = require('../utils/http-errors')
+const { dbEntities, validateParameters, isValidEmail } = require('../utils/helper')
+const { BadRequestError, ConflictError, DatabaseError, NotAcceptableError } = require('../utils/http-errors')
 
 module.exports = {
     async addOne(firstName, lastName, birthDate, gender, email, password, address) {
@@ -40,6 +40,7 @@ module.exports = {
 
     findByEmail: async (email) => {
         if (!email) throw new BadRequestError('The e-mail address is missing')
+        if (!isValidEmail(email)) throw new BadRequestError('The e-mail address format is invalid')
 
         const result = await db.query(`SELECT * FROM ${dbEntities.alumni} WHERE email = $1`, [email])
         return (result.rowCount === 0) ? null : result.rows[0]
