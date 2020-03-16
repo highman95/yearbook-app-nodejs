@@ -2,10 +2,10 @@ const subDivisionModel = require('../models/sub-division')
 
 module.exports = {
     create: async (req, res, next) => {
-        const { body: { division_id, name }, userId: moderator_id } = req;
+        const { body: { division_id, name }, user_id } = req;
 
         try {
-            const sub_division = await subDivisionModel.addOne(division_id, name, moderator_id)
+            const sub_division = await subDivisionModel.addOne(division_id, name, user_id)
             res.status(201).json({ status: 'success', data: { message: 'Sub-division successfully created', sub_division } })
         } catch (e) {
             next(e)

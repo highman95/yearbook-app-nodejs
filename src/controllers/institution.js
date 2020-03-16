@@ -3,10 +3,10 @@ const divisionModel = require('../models/division')
 
 module.exports = {
     create: async (req, res, next) => {
-        const { body: { name, short_name }, userId: moderator_id } = req;// TODO: remove
+        const { body: { name, short_name }, user_id } = req;
 
         try {
-            const institution = await institutionModel.addOne(name, short_name, moderator_id);
+            const institution = await institutionModel.addOne(name, short_name, user_id);
             res.status(201).json({ status: 'success', data: { message: 'Institution successfully created', institution } });
         } catch (e) {
             next(e)
