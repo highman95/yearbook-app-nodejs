@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const { dbEntities, validateParameters, isValidEmail } = require('../utils/helper')
-const { BadRequestError, ConflictError, DatabaseError, NotAcceptableError } = require('../utils/http-errors')
+const { BadRequestError, ConflictError, DatabaseError, NotAcceptableError, UnauthorizedError } = require('../utils/http-errors')
 
 module.exports = {
     async addOne(firstName, lastName, birthDate, gender, email, password, address) {
@@ -35,6 +35,24 @@ module.exports = {
         } catch (e) {
             console.error('[Cand.] DB-Error: ', e.message || e.error.message)
             throw new DatabaseError('The alumni details could not be saved')
+        }
+    },
+
+    async verifyCredentials(email, password) {
+        if (!password) throw new BadRequestError('The password is missing')
+
+        try {
+            const alumnus = await this.findByEmail(email)
+            if (!alumnus) throw new Error('The e-mail address does not exist')
+
+            const same = await bcrypt.compare(password, alumnus.passw0rd)
+            if (!same) throw new Error('The password is incorrect')
+
+            const { id, first_name, last_name } = alumnus
+            return { id, first_name, last_name }
+        } catch (e) {
+            console.error('[Cand.] Auth-Error: ', e.message || e.error.message)
+            throw new UnauthorizedError('Invalid username / password')
         }
     },
 
