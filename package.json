@@ -31,7 +31,7 @@
         "cloudinary": "^1.16.0",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
-        "hbs": "^4.1.0",
+        "hbs": "^4.2.0",
         "jsonwebtoken": "^8.5.1",
         "multer": "^1.4.2",
         "node-esapi": "0.0.1",
